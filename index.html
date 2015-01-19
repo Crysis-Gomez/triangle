@@ -1,0 +1,359 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<title>IDE,Frameworks,Libraries</title>
+		<style>
+			html, body {
+				height: 100%;
+				background: url(../images/background2.png);
+			    overflow-x: hidden;
+			    background-size: cover;
+			    background-repeat: no-repeat;
+			    background-position: center center;
+			    background-attachment: fixed;
+			}
+
+			body {
+				background-color: #000000;
+				margin: 0;
+				font-family: Helvetica, sans-serif;;
+				overflow: hidden;
+			}
+
+			a {
+				color: #ffffff;
+			}
+
+			#info {
+				position: absolute;
+				width: 100%;
+				color: #ffffff;
+				padding: 5px;
+				font-family: Monospace;
+				font-size: 13px;
+				font-weight: bold;
+				text-align: center;
+				z-index: 1;
+			}
+
+			#menu {
+				position: absolute;
+				bottom: 20px;
+				width: 100%;
+				text-align: center;
+			}
+
+			.triangle {
+				width: 0;
+				height: 0;
+				border-left: 300px solid transparent;
+				border-right: 300px solid transparent;
+				position: relative;		
+			}
+
+			.triangle.down:before {
+	
+				content:"";
+				border-left: 280px solid transparent;
+				border-right: 280px solid transparent;
+				border-bottom: 560px solid rgba(127,255,255,0.4);
+				position: absolute;
+				right: -280px;
+				top: 25px;		
+			}
+
+			.triangle.up:before{
+				content:"";
+				border-left: 280px solid transparent;
+				border-right: 280px solid transparent;
+				border-top: 560px solid rgba(127,255,255,1);
+				position: absolute;
+				right: -280px;
+				bottom: 25px;		
+			}
+
+			
+			.symbol{
+				position: absolute;
+				font-size: 60px;
+				font-weight: bold;
+				color: rgba(0,0,0,0.75);
+				text-shadow: 0 0 10px rgba(0,255,255,0.95);
+				text-align: center;
+				right: -200px;
+				left: -200px;
+			}
+
+			.triangle.down .symbol {		
+				top: 400px;	
+			}
+
+			.triangle.up .symbol {
+				bottom: 400px;
+			}
+
+			.down{
+				border-bottom: 600px solid rgba(127,255,255,0.4);
+			}
+
+			.up{
+				border-top: 600px solid rgba(127,255,255,0.25);
+			}
+
+			.github{
+  min-height: 50px;
+  font-family: "Oswald";
+  font-size: 1.0em;
+  color: #fff;
+}
+
+.github p{
+  position: relative;
+  margin-right: 40px;
+  border: solid 1px #45cefe;
+  height: 40px;
+  float: left;
+  line-height: 39px;
+  border-radius: 20px;
+
+  background: linear-gradient(to right, rgba(0,0,0,0) 50%, rgba(69,206,254,0.4) 50%);
+  background-size: 200% 100%;
+  background-position:left bottom;
+  margin-left:10px;
+  transition:all 0.2s ease;
+  min-width: 250px;
+}
+
+
+
+.github p:hover{
+  cursor: pointer;
+  background-position:right bottom;
+}
+
+.github p:after {
+  content: "";
+  width: 32px;
+  height: 32px;
+  background: url(../images/github32x32.png) no-repeat;
+  position: absolute;
+  display: block;
+  bottom: 4px;
+  right: 4px;
+  
+}
+
+p{
+  color: #fff;
+  font-family: "Oswald";
+  font-size: 1.0em;
+  padding-left: 10px;
+  padding-right: 10px;
+  
+}
+
+		</style>
+	</head>
+	<body>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+		<script src="../three/build/three.min.js"></script>
+		<script src="../three/examples/js/libs/tween.min.js"></script>
+		<script src="../three/examples/js/controls/TrackballControls.js"></script>
+		<script src="../three/examples/js/renderers/CSS3DRenderer.js"></script>
+
+		<div id="container"></div>
+		<div class="github">
+					<div class="sub" style="float:right;margin-right:10px;">				
+						<p>Look here for the source code!!</p>
+						<a href="https://github.com/Crysis-Gomez/PythonProjectEuler" target="blank"></a>
+					</div>
+				</div>	
+
+
+
+		<script>
+
+			var table=[
+					"Eclipse",
+					"Netbeans",
+					"Notepad++",
+					"Sublime Text",
+					"Visual studio 2010",
+					"Visual studio 2012",
+					"Flash Develop",
+					"NodeJS",
+					"ThreeJS",
+					"GitHub",
+					"Tortoise SVN",
+					"Web Storm",
+					"Unity",
+					"Wordpress",
+					"Django",
+					"Ubuntu",
+					"Putty",
+					"Filezilla",
+					"Kinect",
+					"Microsoft Word",
+					"MySQL",
+					"Android SDK",
+					"TypeScript",
+					"XNA",
+					"VIM",			
+				]
+
+
+			var camera, scene, renderer;
+			var controls;
+
+			var objects = [];
+			var targets = {triangle: []};
+
+			init();
+			animate();
+
+			function init() {
+
+				camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 10000 );
+				camera.position.z = 3000;
+
+				scene = new THREE.Scene();
+
+
+				var count = 0;
+				var max = 1;
+				for ( var i = 0; i < table.length; i ++ ) {
+					
+					var element = document.createElement( 'div' );
+
+					
+					
+					 if(count%2 == 0){
+					 	element.className = "triangle " +"down";
+					
+					 }else{
+					 	element.className = "triangle " +"up";
+					 }
+
+
+					var object = new THREE.Object3D();	
+					object.position.x = -300*count+150*max;
+					object.position.y = -300 *max+1500;
+					object.position.z = -800;		
+					targets.triangle.push( object ); 
+
+
+					count++;
+
+					if(count == max){
+						count = 0;
+						max +=2;
+					}
+
+					var symbol = document.createElement( 'div' );
+					symbol.className = 'symbol';
+					symbol.textContent = table[ i ];
+					element.appendChild( symbol );
+
+
+
+			
+					var object = new THREE.CSS3DObject( element );
+					object.position.x = Math.random() * 4000 - 2000;
+					object.position.y = Math.random() * 4000 - 2000;
+					object.position.z = Math.random() * 4000 - 2000;
+					scene.add( object );
+
+					objects.push( object );
+
+					$(".github").click(function() {
+				  		window.open($(this).find("a").attr("href"),'_blank'); 
+				  		return false;
+					});
+				}
+
+
+	
+
+				renderer = new THREE.CSS3DRenderer();
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				renderer.domElement.style.position = 'absolute';
+				document.getElementById( 'container' ).appendChild( renderer.domElement );
+
+				controls = new THREE.TrackballControls( camera, renderer.domElement );
+				controls.rotateSpeed = 0.5;
+				controls.minDistance = 500;
+				controls.maxDistance = 6000;
+				controls.addEventListener( 'change', render );
+		
+
+				transform( targets.triangle, 2000 );
+
+	
+				window.addEventListener( 'resize', onWindowResize, false );
+
+			}
+
+			function transform( targets, duration ) {
+
+				TWEEN.removeAll();
+
+				for ( var i = 0; i < objects.length; i ++ ) {
+
+					var object = objects[ i ];
+					var target = targets[ i ];
+
+					new TWEEN.Tween( object.position )
+						.to( { x: target.position.x, y: target.position.y, z: target.position.z }, Math.random() * duration + duration )
+						.easing( TWEEN.Easing.Exponential.InOut )
+						.start();
+
+					new TWEEN.Tween( object.rotation )
+						.to( { x: target.rotation.x, y: target.rotation.y, z: target.rotation.z }, Math.random() * duration + duration )
+						.easing( TWEEN.Easing.Exponential.InOut )
+						.start();
+
+				}
+
+				new TWEEN.Tween( this )
+					.to( {}, duration * 2 )
+					.onUpdate( render )
+					.start();
+
+			}
+
+			function onWindowResize() {
+
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+
+				renderer.setSize( window.innerWidth, window.innerHeight );
+
+				render();
+
+			}
+
+			function animate() {
+
+				requestAnimationFrame( animate );
+
+				TWEEN.update();
+
+				controls.update();
+
+			}
+
+			function render() {
+
+				renderer.render( scene, camera );
+
+			}
+
+
+			
+
+		</script>
+	</body>
+</html>
